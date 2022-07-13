@@ -1,0 +1,69 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Auctions{% endblock %}</title>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
+    </head>
+    <body>
+
+        <nav class="navbar navbar-light bg-light">
+            <a class="navbar-brand" href="#">
+              <img src="https://cdn.dribbble.com/users/4553005/screenshots/13436219/ecommerce_logo_3-01_4x.png" width="30" height="30" class="d-inline-block align-top" alt="">
+              Auctions
+            </a>
+          </nav>
+
+        <nav  class="navbar navbar-dark bg-dark">
+            <nav class="nav-item">
+                <a class="nav-link" href="{% url 'index' %}"> Active Listings</a>
+            </nav>
+            {% if user.is_authenticated %}
+                <nav class="nav-item">
+                    <a href= "{% url 'notify' %}"class="nav-link">
+                        Notification
+                      </a>
+                    </nav>
+                <nav class="nav-item">
+                    <a class="nav-link" href="{% url 'create' %}">CreateListing</a>
+                </nav>
+                <nav class="nav-item">
+                    <a class="nav-link" href="{% url 'watchlist' %}">WatchList</a>
+                </nav>
+                <nav class="nav-item">
+                    <a class="nav-link" href="{% url 'categories' %}">Categories</a>
+                </nav>
+                <nav class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                </nav>
+            {% else %}
+                <nav class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                </nav>
+                <nav class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </nav>
+            {% endif %}
+            <div>
+                <span class="navbar-text">
+                   
+                  
+                {% if user.is_authenticated %}
+                    Signed in as : <strong >{{ user.username }}</strong>.
+                {% else %}
+                    Not signed in.
+                {% endif %}
+            </span>
+            </div>
+        </nav>
+        <hr>
+        
+        {% block body %}
+        
+        {% endblock %}
+    </body>
+    
+</html>

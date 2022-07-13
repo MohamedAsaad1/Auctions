@@ -1,0 +1,17 @@
+{% extends "auctions/layout.html" %}
+{% block title %}
+Notify
+{% endblock%}
+
+{% block body %}
+<h1> Your  Notifications </h1>
+    {% for list in listing %}
+        {% if list.winner == user and not list.active %}
+        <ul>
+            <li><a href="{% url 'listing' list.id %}" class="alert alert-success">congratulations you Win this auctions: {{list.title}}</a></li>
+            <p>=====================================</p>
+        </ul>
+        {% endif%}  
+    {% endfor %}
+
+{% endblock %}

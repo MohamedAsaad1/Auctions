@@ -1,0 +1,100 @@
+
+
+
+
+
+
+
+
+
+
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+{{listing.title}}
+{% endblock %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+    {% endfor %}
+</ul>
+{% endif %}
+{%block body%}
+    {% if listing.active == False %}
+    <div class="alert alert-dark text-center" role="alert">
+        This auction has finished
+    </div>
+    {% endif %}
+
+    
+<div class="container-lg pt-2 pb-3">
+
+        <div class="row mt-2 align-items-center">
+            <div class="col-md-6 col-12 d-flex">
+                <img style="max-height: 450px;" class="img-fluid mx-auto" src="{% if listing.url_image %}{{ listing.url_image }}{%else%}https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png{%endif%}"alt="Photo of{{ listing.title }}">
+            </div>
+            <div class="jumbotron text-center" style="padding: 3% 10%;">
+                <br>
+                <br>
+                <h1><strong>{{listing.title}}</strong></h1> <br>
+                <br>
+                <p> 
+                    {% if user.is_authenticated %}
+                    <form  action="{% url 'watchchange' listing.id  %}" method="POST">
+                        {% csrf_token %}
+                         {% if exists %}
+                         <button type="submit" class="btn btn-outline-primary btn-sm"><i class="fa fa-minus" aria-hidden="true"></i> Remove Watchlist</button>
+                        {% else %}
+                        <button type="submit" class="btn btn-outline-primary btn-sm"><i class="fa fa-minus" aria-hidden="true"></i> Watchlist</button>
+                        {% endif%}
+                    </form>
+                    {% endif %}
+                </p>
+                <p class="lead" align="justify"><strong>Description : </strong> {{listing.description}}</p>  
+                <p class="lead" align="justify"><strong>Category : </strong>{{listing.categorie}}</p>
+                <p class="lead" align="justify"><strong>Current Bid Price : </strong>{{listing.max_bid}}$</p>
+                <p class="lead" align="justify"><strong>Created on : </strong>{{listing.name_user}} </p>
+                <p class="lead" align="justify"><strong>Created at : </strong> {{listing.date}}</p>
+                {% if listing.winner == user %}
+                <span class="badge badge-secondary badge-success">You won this auction!</span>
+                {% endif %}
+                {% if user == listing.name_user%}
+                <form action="{% url "close" listing.id %}" method = "POST">
+                    {% csrf_token %}
+                   <p align="justify"><input class="btn btn-btn btn-dark" type="submit" value="Close"></p>
+                </form>
+                {% endif %}
+                {% if listing.active%}
+                <form action="{% url 'addbid' listing.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input class="form-control" type="number" name="bids" min="{{list.starting_bid}}" placeholder="YourBid" >
+                    </div>
+                    <p align="justify"><input class="btn btn-primary" type="submit" value="Add"></p> </form> 
+                <br>
+                {% endif %}
+
+
+
+
+
+
+
+
+                
+                <div class="jumbotron text-center">
+                    <h2 class="card-title h2">COMMENTS({{number}})</h2>
+                    
+
+                </div>
+                <div class="jumbotron text-center">
+
+                    <h2 class="card-title h2">ADD COMMENT</h2>
+                    
+
+                </div>
+                
+            </div>
+{%endblock%}

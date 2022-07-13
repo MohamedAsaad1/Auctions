@@ -1,0 +1,22 @@
+
+    <h2>Register</h2>
+
+
+    <form >
+        
+        <div class="form-group">
+            <input class="form-control" >
+        </div>
+        <div class="form-group">
+            <input class="form-control">
+        </div>
+        <div class="form-group">
+            
+        </div>
+        <div class="form-group">
+            
+        </div>
+       
+    </form>
+
+    Already have an account? Log In here.</a>

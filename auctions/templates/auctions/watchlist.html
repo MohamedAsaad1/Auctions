@@ -1,0 +1,62 @@
+{% extends "auctions/layout.html" %}
+{% block title %}
+{{name}}WatchList
+{% endblock %}
+
+{% block body %}
+<div>
+    {% if messages %}
+    <ul class="alert alert-success">
+        {% for message in messages %}
+        <li  {% if message.tags %} class="{{ message.tags }}" {% endif %}> {{ message }} </li>
+        {% endfor %}
+        {%endif%}
+</div>
+
+<h2 class="title text-center border-bottom">Watchlist</h2>
+    
+    <div class="container-fluid">
+
+        {% for item in watchlist %}
+            <a href="{% url 'listing' item.id %}" class="text-decoration-none text-dark">
+                <div class="row mb-3 watchlist border-bottom mx-auto">
+                    <div class="media mb-3">
+                        <div class="d-flex flex-column" style="width:100px">
+                            {% if item.active == True %}
+                            <span class="badge badge-success mb-1">Active</span>
+                            {% else %}
+                            <span class="badge badge-danger mb-1">Finished</span>
+                            {% endif %}
+                            <img src="{% if item.url_image %}{{ item.url_image }}{% else %}https://upload.wikimedia.org/wikipedia/commons/2/2f/No-photo-m.png{% endif %}" class="mr-3 rounded" style="width: 100px;" alt="Photo of {{ item.title }}">
+                        </div>
+                        <div class="media-body ml-4 my-auto">
+                            <h5><small class="mt-0 mr-3"><strong>{{item.title}}</strong></small></h5>
+                            <small>
+                                {% if item.active == True %}
+                                    Current price {{item.max_bid}}
+                                    {% if item.winner == user %}
+                                        <br>You are winning this auction
+                                    {% endif %}
+                                {% else %}
+                                    {% if item.winner == user %}
+                                        You won this auction!
+                                    {% else %}
+                                        {{item.winner}} won this auction
+                                    {% endif %}
+                                {% endif %}
+                            </small>
+                            <form action="{% url 'watchlist_list' item.id %}" method="POST">
+                                {% csrf_token %}
+                                <input type="submit" class="btn btn-sm btn-primary mt-2" value="Remove">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+            </a>
+        {% empty %}
+        You have no items in your watchlist.
+        {% endfor %}
+    </div>
+    
+{% endblock %}
